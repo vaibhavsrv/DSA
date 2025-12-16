@@ -1,24 +1,43 @@
 class Solution:
-    def solve(self, i, j, dungeon, dp):
-        m = len(dungeon)
-        n = len(dungeon[0])
-
-        if i == m - 1 and j == n - 1:
-            return max(1, 1 - dungeon[i][j])
-
-        if i >= m or j >= n:
-            return float('inf')
-        if dp[i][j] != -1:
-            return dp[i][j]
-        right = self.solve(i, j + 1, dungeon, dp)
-        left = self.solve(i + 1, j, dungeon, dp)
-
-        minHealth = min(right, left) - dungeon[i][j]
-        dp[i][j] = max(1, minHealth)
-
-        return dp[i][j]
     def calculateMinimumHP(self, dungeon):
         m = len(dungeon)
         n = len(dungeon[0])
-        dp = [[-1] * n for _ in range(m)]
-        return self.solve(0, 0, dungeon, dp)
+
+        def solve(minHealth):
+            dp = [[-1] * n for _ in range(m)]
+
+            dp[0][0] = minHealth + dungeon[0][0]
+            if dp[0][0] <= 0:
+                return False
+
+            for i in range(m):
+                for j in range(n):
+                    if dp[i][j] <= 0:
+                        continue
+
+                    if i + 1 < m:
+                        dp[i + 1][j] = max(
+                            dp[i + 1][j],
+                            dp[i][j] + dungeon[i + 1][j]
+                        )
+
+                    if j + 1 < n:
+                        dp[i][j + 1] = max(
+                            dp[i][j + 1],
+                            dp[i][j] + dungeon[i][j + 1]
+                        )
+
+            return dp[m - 1][n - 1] > 0
+
+        left, right = 1, 10**7
+        answer = right
+
+        while left <= right:
+            mid = (left + right) // 2
+            if solve(mid):
+                answer = mid
+                right = mid - 1
+            else:
+                left = mid + 1
+
+        return answer
