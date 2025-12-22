@@ -1,6 +1,6 @@
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
-        dp = {}
+        '''dp = {}
 
         def solve(n, amount):
             if amount == 0:
@@ -17,4 +17,11 @@ class Solution:
             dp[(n, amount)] = skip + take
             return dp[(n, amount)]
 
-        return solve(len(coins), amount)
+        return solve(len(coins), amount)'''
+        dp = [0] * (amount + 1)
+        dp[0] = 1
+
+        for coin in coins:
+            for i in range(coin,amount+1):
+                dp[i] += dp[i - coin]
+        return dp[amount]
