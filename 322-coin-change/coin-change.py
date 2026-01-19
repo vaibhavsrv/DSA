@@ -1,6 +1,6 @@
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
-        INF = 10**9
+        '''INF = 10**9
         dp = {}
 
         def solve(n,amount):
@@ -24,4 +24,15 @@ class Solution:
         if res >= INF:
             return -1
         else:
-            return res
+            return res'''
+        n = amount
+        dp = [float('inf')]*(n+1)
+        dp[0] = 0
+        for i in range(1,n+1):
+            for coin in coins:
+                if(i-coin>=0):
+                    dp[i] = min(dp[i],dp[i-coin]+1)
+        if(dp[-1] == float('inf')):
+            return -1
+        else:
+            return dp[-1]
