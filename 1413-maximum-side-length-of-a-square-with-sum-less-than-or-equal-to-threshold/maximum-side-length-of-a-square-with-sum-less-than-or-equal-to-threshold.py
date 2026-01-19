@@ -1,23 +1,20 @@
 class Solution:
     def maxSideLength(self, mat: List[List[int]], threshold: int) -> int:
-        m, n = len(mat), len(mat[0])
+        prefix = [[0] * (len(mat[0])+1)]
+        for row in mat:
+            prefix.append([0]+row)
+            for idx in range(len(row)):
+                prefix[-1][idx+1] -=prefix[-2][idx] 
+                prefix[-1][idx+1] +=prefix[-1][idx] 
+                prefix[-1][idx+1] +=prefix[-2][idx+1] 
 
-        pref = [[0] * (n + 1) for _ in range(m + 1)]
-
-        for i in range(1, m + 1):
-            for j in range(1, n + 1):
-                pref[i][j] = (mat[i-1][j-1]+ pref[i-1][j]+ pref[i][j-1]- pref[i-1][j-1])
-
-        maxSide = min(m, n)
-
-        while maxSide > 0:
-            for i in range(m - maxSide + 1):
-                for j in range(n - maxSide + 1):
-                    s = (
-                        pref[i+maxSide][j+maxSide]- pref[i][j+maxSide]- pref[i+maxSide][j]+ pref[i][j]
-                    )
-                    if s <= threshold:
-                        return maxSide
-            maxSide -= 1
-
-        return 0
+        result = 0
+        for r in range(len(prefix)-1):
+            for c in range(len(prefix[0])-1):
+                end_r = r + result+1
+                end_c = c+ result+1
+                while end_r < len(prefix) and end_c < len(prefix[0]) and prefix[end_r][end_c] - prefix[r][end_c] - prefix[end_r][c] + prefix[r][c] <=threshold:
+                    end_r+=1
+                    end_c+=1
+                    result +=1
+        return result  
