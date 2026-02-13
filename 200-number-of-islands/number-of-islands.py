@@ -1,26 +1,19 @@
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
-        m,n = len(grid),len(grid[0])
-        if not grid:
+        if len(grid) == 0:
             return 0
-        count = 0
-        for i in range(m):
-            for j in range(n):
-                if grid[i][j] == "1":
-                    self.dfs(grid,i,j)
-                    count += 1
+        count=0
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] =='1':
+                    dfs(grid,i,j,len(grid),len(grid[0]))
+                    count +=1
         return count
-    def dfs(self,grid,visit,record):
-        if(
-            visit < 0
-            or record < 0
-            or visit>=len(grid)
-            or record>=len(grid[0])
-            or grid[visit][record] != "1"
-        ):
+def dfs(grid,i,j,m,n):
+        if i<0 or j<0 or i>=m or j>= n or grid[i][j]!='1':
             return
-        grid[visit][record] = "0"
-        self.dfs(grid,visit+1,record)
-        self.dfs(grid,visit-1,record)
-        self.dfs(grid,visit,record+1)
-        self.dfs(grid,visit,record-1)
+        grid[i][j] = '2'
+        dfs(grid,i,j+1,m,n)
+        dfs(grid,i,j-1,m,n)
+        dfs(grid,i+1,j,m,n)
+        dfs(grid,i-1,j,m,n)
