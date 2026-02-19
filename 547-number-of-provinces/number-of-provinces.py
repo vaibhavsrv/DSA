@@ -1,21 +1,22 @@
-from collections import deque
+class UnionFind(object):
+    def __init__ (self,n):
+        self.u = list(range(n))
+    def union(self,a,b):
+        ra,rb = self.find(a),self.find(b)
+        if ra != rb:
+            self.u[ra] = rb
+    def find(self,a):
+        while self.u[a] != a:
+            a=self.u[a]
+        return a
 class Solution:
     def findCircleNum(self, isConnected: List[List[int]]) -> int:
-        n = len(isConnected)
-        visited = [False] * n
-        pro = 0
+        if not isConnected: return 0
+        s=len(isConnected)
 
-        for i in range(n):
-            if not visited[i]:
-                pro += 1
-                q = deque()
-                q.append(i)
-                visited[i] = True
-
-                while q:
-                    curr = q.popleft()
-                    for j in range(n):
-                        if isConnected[curr][j] == 1 and not visited[j]:
-                            visited[j] = True
-                            q.append(j)
-        return pro
+        unionfind = UnionFind(s)
+        for r in range(s):
+            for c in range(r,s):
+                if isConnected[r][c] == 1:
+                    unionfind.union(r,c)
+        return len(set([unionfind.find(i) for i in range(s)]))
