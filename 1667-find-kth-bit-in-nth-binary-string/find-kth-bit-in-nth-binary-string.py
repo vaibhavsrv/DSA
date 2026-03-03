@@ -9,4 +9,4 @@ class Solution:
                 else:
                     invert += '0'
             s = s + "1" + invert[::-1]
-        return s[k-1];
+        return s[k-1]
