@@ -3,14 +3,14 @@ class Solution:
         # THIS IS THE PURE RECURSIVE CODE FOR LCS , THROWING TLEEEEE
         # NOW WITH MEMO
         memo = {}
-        def dp(i,j):
+        def solve(i,j):
             if i == 0 or j == 0:
                 return 0
             if (i,j) in memo:
                 return memo[(i,j)]
             if text1[i-1] == text2[j-1]:
-                memo[(i,j)] = 1 + dp(i-1,j-1)
+                memo[(i,j)] = 1 + solve(i-1,j-1)
             else:
-                memo[(i,j)] =  max(dp(i,j-1),dp(i-1,j))
+                memo[(i,j)] = max(solve(i,j-1),solve(i-1,j))
             return memo[(i,j)]
-        return dp(len(text1),len(text2))      
+        return solve(len(text1),len(text2))
