@@ -1,10 +1,7 @@
 class Solution:
     def longestPalindrome(self, s: str) -> int:
-        freq = {}
-
-        for ch in s:
-            freq[ch] = freq.get(ch,0) + 1
-
+        from collections import Counter
+        freq = Counter(s)
         length = 0
         odd = False
 
