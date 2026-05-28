@@ -1,16 +1,26 @@
 class Solution:
-    def floodFill(self, image: List[List[int]], sr: int, sc: int, color: int) -> List[List[int]]:
-        start = image[sr][sc]
-        def solve(x,y):
-            if x < 0 or x >= len(image): return
-            if y < 0 or y >= len(image[0]): return 
+    def floodFill(
+        self, image: List[List[int]], sr: int, sc: int, color: int
+    ) -> List[List[int]]:
+        initial_color = image[sr][sc]
+        if image[sr][sc] == color:
+            return image
 
-            if image[x][y] == color: return
-            if image[x][y] != start: return
-            image[x][y] = color
-            solve(x+1,y)
-            solve(x,y+1)
-            solve(x,y-1)
-            solve(x-1,y)
-        solve(sr,sc)
+        rows = len(image)
+        cols = len(image[0])
+
+        def dfs(i, j):
+            if i < 0 or i >= rows or j < 0 or j >= cols:
+                return
+            if image[i][j] != initial_color:
+                return
+
+            image[i][j] = color
+
+            dfs(i + 1, j)
+            dfs(i, j + 1)
+            dfs(i - 1, j)
+            dfs(i, j - 1)
+
+        dfs(sr, sc)
         return image
