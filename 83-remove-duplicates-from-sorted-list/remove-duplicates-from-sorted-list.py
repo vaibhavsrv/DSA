@@ -4,14 +4,10 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        if not head:
-            return head
+    def deleteDuplicates(self, head: ListNode | None) -> ListNode | None:
         current = head
-
-        nextt = None
-        while current.next:
-            if current.next.val == current.val:
+        while current and current.next:
+            if current.val == current.next.val:
                 current.next = current.next.next
             else:
                 current = current.next
